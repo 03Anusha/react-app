@@ -1,60 +1,56 @@
-import React from 'react';
-import './App.css';
-import Model from './components/Model';
-import data from "./components/data.json";
-import Products from "./components/Products";
-import Filter from "./components/Filter";
-import EventCalendar from './components/EventCalendar';
+import React, { useState } from 'react';
+import LoginForm from './components/LoginForm';
+import Table from './components/table'; 
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      products: data.products,
-      orderStage: "",
 
-    };
+function App(){
+  const adminiUser = {
+    email:"",
+    password:""
+  
   }
+  const [user, setUser] = useState({name: "",email: ""});
+  const [error, SetError] = useState("");
 
-  filterProducts = (event) => {
-    // impl
-    console.log(event.target.value);
 
-    if (event.target.value === "") {
-      this.setState({ orderStage: event.target.value, product: data.products });
-    } else {
+  const Login = details => {
+    console.log(details);
 
-      this.setState({
-        orderStage: event.target.value,
-        products: data.products.filter(
-          (product) => product.orderStage.indexOf(event.target.value) >= 0
-        ),
-      });
-    }
-  };
-
-  render() {
-    return (
-
-      <main>
-        <div>
-          <Model />
-        </div>
-        <div className="content">
-          <div className="main">Products</div>
-          <Filter count={this.state.products.length}
-            orderStage={this.state.orderStage}
-            filterProducts={this.filterProducts}
-          ></Filter>
-          <Products products={this.state.products}></Products>
-
-          <EventCalendar />
-        </div>
-
-      </main>
-    );
+  if (details.email == adminiUser.email && details.password == adminiUser.password == adminiUser.password)
+    console.log("Logged in");
+    setUser({
+      name: details.name,
+      email: details.email
+    });
   }
+const Logout = () => {
+  setUser({name: "", email: ""});
 }
 
 
+return (
+  <div className='App'>
+    {(user.email != "") ? (
+      <div className="welcome">
+        <h2> PIZZA DUNIYA </h2>
+  
+        
+      <button onClick={Logout}>logout</button>
+    
+      <Table />
+      
+        </div>
+
+    
+
+  ) : (
+     <LoginForm Login={Login} error={error} />
+    )};
+  
+
+    </div>
+  
+);
+    }
 export default App;
+
